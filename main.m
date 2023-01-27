@@ -9,7 +9,7 @@ psi = zeros(N, S1);
 coff = zeros(N, 1);
 x = linspace(-XLim, XLim, S1)';
 for n = 1:N
-    [psi(idx,:),x] = get_state(idx-1, beta, -XLim, XLim, S1);
+    [psi(n,:),x] = get_state(n-1, beta, -XLim, XLim, S1);
     coff(n) = alpha^(n-1)/sqrt(factorial(n-1))*exp(-1/2*abs(alpha)^2);
 end
 
@@ -36,17 +36,6 @@ for t_ = 1:length(t)
     pause(0.1);
 end
 
-function y = ntime(x)
-    y = 1;
-    if x == 0
-        y = 1;
-    else
-        for idx = 1:x
-            y = y*x;
-        end
-    end
-end
-
 function [psi_n, x] = get_state ...
     (n, alpha, x_l, x_r, sample)
     x = linspace(x_l, x_r, sample)';
@@ -61,7 +50,6 @@ end
 function H = hermite(n, x)
     syms xi
     d = diff(exp(-xi^2), n);
-    
     d_ = subs(d, 'xi', x);
     H = (-1)^n*exp(x^2)*d_;
 end
